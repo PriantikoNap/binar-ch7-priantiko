@@ -1,0 +1,40 @@
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY NOT NULL,
+  username VARCHAR(10) NOT NULL,
+  pass VARCHAR(15) NOT NULL,
+  token VARCHAR(255),
+  role VARCHAR(255),
+  create_at TIMESTAMP DEFAULT now()
+  );
+
+  CREATE TABLE histories(
+    id SERIAL PRIMARY KEY,
+    username INT REFERENCES users(id) ON DELETE CASCADE,
+    played NUMERIC DEFAULT 0,
+    win NUMERIC DEFAULT 0,
+    lose NUMERIC DEFAULT 0,
+    lvl NUMERIC DEFAULT 0,
+);
+
+CREATE TABLE biodata(
+    id SERIAL PRIMARY KEY NOT NULL,
+    nama VARCHAR(20) NOT NULL,
+    alamat VARCHAR(20),
+    email VARCHAR(20) NOT NULL,
+    wallet NUMERIC DEFAULT 0,
+    fk_histories INT REFERENCES histories(id) ON DELETE CASCADE,
+    fk_users INT REFERENCES users(id) ON DELETE CASCADE,
+    country VARCHAR(20),
+    create_at TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE room(
+  id SERIAL PRIMARY KEY NOT NULL,
+  p1_1 VARCHAR(20),
+  p1_2 VARCHAR(20),
+  p1_3 VARCHAR(20),
+  p2_1 VARCHAR(20),
+  p2_2 VARCHAR(20),
+  p2_3 VARCHAR(20),
+  is_finished BOOLEAN DEFAULT FALSE
+);
