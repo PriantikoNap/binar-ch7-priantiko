@@ -7,8 +7,9 @@ const auth = require('../middleware/auth');
 // console.log(auth.bearer)
 // const authCheck = passport.authenticate('bearer', { session: false });
 
-router.get('/free', gameController.getGames);
-router.get('/check', gameController.getGames);
+router.get('/', gameController.getGames);
+router.post('/createroom', auth.roleCheck,gameController.createRoom);
+router.get('/fight/:id', gameController.fightRoom);
 router.get('/aut',auth.roleCheck ,gameController.getGames);
 router.get('/aui',auth.adminCheck,gameController.getGames);
 

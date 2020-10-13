@@ -1,29 +1,11 @@
 
 var express = require('express')
-var Strategy = require('passport-http-bearer').Strategy;
+
 var pool = require('../models/db');
 
 const ROLES = ['user', 'admin'];
 
-const bearer = new Strategy(
-    async function(token, cb) {
-      try {
-        // const user = await db.User.findAll({
-        //   where: { token: token }
-        // })
-        const promising = await pool.query('SELECT * FROM users WHERE token=$1',[token])
-        console.log(token);
-        
-        if (promising.length > 0) {
-          return cb(null, promising.rows);
-        } else {
-          return cb(null, false);
-        }    
-      } catch (error) {
-        return cb(error);
-      }
-    } 
-  );
+
   
   async function roleCheck(req, res, next) {
     try {
@@ -84,6 +66,6 @@ const bearer = new Strategy(
     }
   }
   
-  module.exports = { bearer, roleCheck, adminCheck }
+  module.exports = { roleCheck, adminCheck }
 
 
