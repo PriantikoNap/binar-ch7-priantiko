@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const dbbiodata =  require('../controllers/Biodata')
+const dbbiodata =  require('../controllers/controllers.biodata')
 
 router.get('/',dbbiodata.biodata);
 router.get('/:id', dbbiodata.biodataId)

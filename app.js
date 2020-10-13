@@ -3,12 +3,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var passport = require('passport')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var historyRouter = require('./routes/histories');
 var biodataRouter = require('./routes/biodatas');
 var gamesRouter = require('./routes/games');
+
 
 var app = express();
 
@@ -21,13 +22,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+const session = require("express-session")
+const flash = require("express-flash")
 
-
+app.use(session({
+  secret:'secret',
+  resave: false,
+  saveUninitialized : false
+}))
+const initializePassport = require('./middleware/passport-config')
+app.use(passport.initialize())
+app.use(passport.session())
+initializePassport(passport)
+app.use(flash())
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/history', historyRouter);
 app.use('/biodata', biodataRouter);
 app.use('/games', gamesRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

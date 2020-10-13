@@ -9,8 +9,8 @@ const dbuser = require('../controllers/User')
 // });
 router.get('/',dbuser.user);
 router.get('/:id', dbuser.userId)
-router.post('/adduser',dbuser.addUser)
 router.put('/update/:id',dbuser.updateUser)
 router.delete('/delete/:id', dbuser.deleteUser)
+
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const dbhistory =  require('../controllers/History')
+const dbhistory =  require('../controllers/controllers.history')
 
 router.get('/',dbhistory.history);
 router.get('/:id', dbhistory.historyId)

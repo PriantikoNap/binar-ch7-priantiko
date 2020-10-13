@@ -49,7 +49,8 @@ exports.register = async (req, res)=>{
                 res.status(400).json({message: "Username Has Been Taken"});
             } else {
                 const response = await pool.query('INSERT INTO users (username, pass, role, token) VALUES($1, $2,$3,$4) RETURNING *',[username, echpass,'user','']);
-                res.json(response);
+                // res.json(response);
+                res.render('successregis',{data:response.rows})
             }
           }
           
@@ -58,28 +59,28 @@ exports.register = async (req, res)=>{
     }
 }
 
-exports.register = async (req, res)=>{
-    const {username, pass} = req.body;
-    const echpass =  await bcrypt.hash(pass, 12)
-    // console.log(username, echpass);
+// exports.register = async (req, res)=>{
+//     const {username, pass} = req.body;
+//     const echpass =  await bcrypt.hash(pass, 12)
+//     // console.log(username, echpass);
     
-    try {
-        if (!req.body.username || !req.body.pass) {
-            res.status(400).json({message: "bad request. missing parameters"});
-          }else{
-            const permisioning = await pool.query('SELECT EXISTS(SELECT username FROM users WHERE username=$1)',[username]);
-            if (permisioning.rows[0]['exists']) {
-                res.status(400).json({message: "Username Has Been Taken"});
-            } else {
-                const response = await pool.query('INSERT INTO users (username, pass, role, token) VALUES($1, $2,$3,$4) RETURNING *',[username, echpass,'user','']);
-                res.json(response);
-            }
-          }
+//     try {
+//         if (!req.body.username || !req.body.pass) {
+//             res.status(400).json({message: "bad request. missing parameters"});
+//           }else{
+//             const permisioning = await pool.query('SELECT EXISTS(SELECT username FROM users WHERE username=$1)',[username]);
+//             if (permisioning.rows[0]['exists']) {
+//                 res.status(400).json({message: "Username Has Been Taken"});
+//             } else {
+//                 const response = await pool.query('INSERT INTO users (username, pass, role, token) VALUES($1, $2,$3,$4) RETURNING *',[username, echpass,'user','']);
+//                 res.json(response);
+//             }
+//           }
           
-    } catch (err) {
-        res.status(500).json({message: err.message})
-    }
-}
+//     } catch (err) {
+//         res.status(500).json({message: err.message})
+//     }
+// }
 exports.adminregister = async( req, res) => {
     const {username, pass} = req.body;
     const echpass =  await bcrypt.hash(pass, 12)
@@ -94,7 +95,8 @@ exports.adminregister = async( req, res) => {
                 res.status(400).json({message: "Username Has Been Taken"});
             } else {
                 const response = await pool.query('INSERT INTO users (username, pass, role, token) VALUES($1, $2,$3,$4) RETURNING *',[username, echpass,'admin','']);
-                res.json(response);
+                res.render('successregis',{data:response.rows[0]['username']})
+
             }
           }
           
