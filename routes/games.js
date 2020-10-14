@@ -9,8 +9,7 @@ const auth = require('../middleware/auth');
 
 router.get('/', gameController.getGames);
 router.post('/createroom', auth.roleCheck,gameController.createRoom);
-router.get('/fight/:id', gameController.fightRoom);
-router.get('/aut',auth.roleCheck ,gameController.getGames);
-router.get('/aui',auth.adminCheck,gameController.getGames);
+router.get('/fight/:id', auth.roleCheck, gameController.fightRoom);
+
 
 module.exports = router;
