@@ -1,21 +1,24 @@
 const LocaStrategy = require('passport-local').Strategy
 const pool = require('../models/db')
 const bcrypt = require('bcrypt')
+const crypto = require('crypto');
 
 function initialize(passport){
     const autheticateUser = (username, pass, done) =>{
-        pool.query(`SELECT * FROM users WHERE username=$1`,[username], (err, results) => {
+         pool.query(`SELECT * FROM users WHERE username=$1`,[username], (err, results) => {
             if (err) {
               throw err;
-            }
-            console.log(results.rows);
-    
+            }    
             if (results.rows.length > 0) {
               const user = results.rows[0];
     
               bcrypt.compare(pass, user.pass, (err, isMatch) => {
                 if (err) {
                   console.log(err);
+                }
+                if(isMatch){
+                    const accessToken = crypto.randomBytes(24).toString('hex');
+                    pool.query('UPDATE users SET token=$1 where username=$2',[accessToken,user.username]);
                 }
                 if (isMatch) {
                   return done(null, user);
