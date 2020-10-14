@@ -32,7 +32,7 @@ router.post('/login', passport.authenticate("local", {
   successRedirect: "/sucess",
   failureRedirect: "/",
   failureFlash: true
-}),dbauth.login)
+}))
 router.post('/register',dbauth.register)
 router.post('/adminregister',dbauth.adminregister)
 
